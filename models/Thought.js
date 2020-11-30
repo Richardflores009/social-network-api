@@ -10,7 +10,8 @@ const ReactionSchema = new Schema(
     reactionBody: {
       type: String,
       required: true,
-      trim:true
+      trim:true,
+      maxlength: 280
     },
     username: {
       type: String,
@@ -38,7 +39,9 @@ const ThoughtSchema = new Schema({
   thoughtText: {
     type: String,
     required: true,
-    trim: true
+    trim: true,
+    minlength: 1,
+    maxlength: 280
   },
   createdAt: {
     type: Date,

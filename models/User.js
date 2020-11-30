@@ -1,6 +1,11 @@
 const { Schema, model } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
+var validateEmail = function(email) {
+  var re = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+  return re.test(email)
+};
+
 const UserSchema = new Schema({
     username: {
       type: String,
@@ -22,7 +27,12 @@ const UserSchema = new Schema({
           ref: 'Thought'
         }
       ],
-      friends: [this]
+      friends: [
+        {
+          type: Schema.Types.ObjectId,
+          ref: 'User'
+        }
+      ]
   },
   
   {
@@ -36,11 +46,14 @@ const UserSchema = new Schema({
 
   // get total count of comments and replies on retrieval
   UserSchema.virtual('friendCount').get(function() {
-    return this.user.reduce((total, user) => total + user.friends.length + 1, 0);
+    return this.friends.length;
   });
 
   // create the Pizza model using the PizzaSchema
 const User = model('User', UserSchema);
+// User.remove({}, function(err) { 
+//   console.log('collection removed') 
+// });
 
 // export the Pizza model
 module.exports = User;

@@ -36,7 +36,7 @@ const UserSchema = new Schema({
 
   // get total count of comments and replies on retrieval
   UserSchema.virtual('friendCount').get(function() {
-    return this.friends.reduce((total, friend) => total + friend.replies.length + 1, 0);
+    return this.user.reduce((total, user) => total + user.friends.length + 1, 0);
   });
 
   // create the Pizza model using the PizzaSchema
